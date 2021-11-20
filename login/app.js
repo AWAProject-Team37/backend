@@ -1,73 +1,37 @@
-const mysql = require('mysql')
+require('dotenv').config();
 const express = require('express')
 const session = require('express-session')
+const cookieParser = require('cookie-parser')
+const connectFlash = require('connect-flash')
+const initRoutes = require('./routes/routes')
 const bodyParser = require('body-parser')
-const path = require('path')
-const dotenv = require('dotenv')
-
-dotenv.config({ path: './env' })
-
-const db = mysql.createConnection({
-    host: process.env.HOST,
-    user: 'root',
-    // user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE
-})
-
-db.connect((error) => {
-    if(error) {
-        console.log(error)
-    } else {
-        console.log('MySQL Connected')
-    }
-})
+const viewEngine = require('../configs/viewEngine')
+const passport = require('passport')
 
 const app = express()
+
+app.use(cookieParser('secret'))
 
 app.use(session({
     secret: 'secret',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24
+    }
 }))
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-app.set('view engine', 'hbs')
+viewEngine(app)
 
-app.use('/', require('./routes/pages'))
-app.use('/auth', require('./routes/auth'))
+app.use(connectFlash())
 
-// app.post('/auth', (req,res) => {
-//     const email = req.body.email
-//     const password = req.body.password
-//     if (email && password) {
-//         db.query('SELECT * FROM user WHERE email = ? AND password = ?', [email, password], (error, result, fields) => {
-//             if (result.length > 0) {
-//                 req.session.loggedin = true
-//                 req.session.email = email
-//                 res.redirect('/index')
-//             } else {
-//                 res.send('INCORRECT Email or Password!')
-//             }
-//             res.end()
-//         })
-//     } else {
-//         res.send('Please enter Email and Password!')
-//         res.end()
-//     }
-// })
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get('/home', (req, res) => {
-    if (req.session.loggedin) {
-        res.send('Welcome back!')
-    } else {
-        res.send('Please login!')
-    }
-    res.end()
-})
-
-app.listen(3000, () => {
-    console.log("Server running on port 3000")
+let port = process.env.PORT || 3000
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}!`)
 })
