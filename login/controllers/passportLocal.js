@@ -1,6 +1,6 @@
 const passportLocal = require('passport-local')
 const passport = require('passport')
-const loginService = require('../services/login')
+const login = require('../services/login')
 
 const LocalStrategy = passportLocal.Strategy
 
@@ -12,12 +12,12 @@ const initPassportLocal = () => {
     },
     async (req, email, password, done) => {
         try {
-            await loginService.findUserNameByEmail(email).then(async (user) => {
+            await login.findUserNameByEmail(email).then(async (user) => {
                 if (!user) {
                     return done(null, false, req.flash("errors", `This user email "${email}" doesn't exist`))
                 }
                 if (user) {
-                    let match = await loginService.comparePassword(password, user)
+                    let match = await login.comparePassword(password, user)
                     if (match === true) {
                         return done(null, user, null)
                     } else {
@@ -37,7 +37,7 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((id, done) => {
-    loginService.findUserNameByID(id).then((user) => {
+    login.findUserNameByID(id).then((user) => {
         return done(null, user)
     }).catch(error => {
         return done(error, null)
