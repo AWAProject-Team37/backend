@@ -7,11 +7,11 @@ let getLoginPage = (req, res) => {
     })
 }
 
-let login = async (req, res) => {
-    let errorArr = []
-    let validationErr = expressValidator(req)
+const login = async (req, res) => {
+    const errorArr = []
+    const validationErr = expressValidator(req)
     if (!validationErr.isEmpty()) {
-        let errors = Object.values(validationErr.mapped())
+        const errors = Object.values(validationErr.mapped())
         errors.forEach((item) => {
             errorArr.push(item.msg)
         })
@@ -20,7 +20,7 @@ let login = async (req, res) => {
     }
 
     try {
-        await loginService.handleLogin(req.body.email, req.body.password)
+        await loginService.login(req.body.email, req.body.password)
         return res.redirect('/')
     } catch (err) {
         req.flash("errors", err)
@@ -28,21 +28,21 @@ let login = async (req, res) => {
     }
 }
 
-let checkLogin = (req, res, next) => {
+const checkLogin = (req, res, next) => {
     if (!req.isAuthenticated()) {
         return res.redirect('/login')
     }
     next()
 }
 
-let checkLogout = (req, res, next) => {
+const checkLogout = (req, res, next) => {
     if (req.isAuthenticated()) {
         return res.redirect("/");
     }
     next();
 }
 
-let postLogout = (req, res) => {
+const postLogout = (req, res) => {
     req.session.destroy(function(err) {
         return res.redirect('/login')
     })

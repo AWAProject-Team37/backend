@@ -2,9 +2,9 @@ const passportLocal = require('passport-local')
 const passport = require('passport')
 const loginService = require('../services/login')
 
-let LocalStrategy = passportLocal.Strategy
+const LocalStrategy = passportLocal.Strategy
 
-let initPassportLocal = () => {
+const initPassportLocal = () => {
     passport.use(new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
@@ -44,4 +44,4 @@ passport.deserializeUser((id, done) => {
     })
 })
 
-module.exports = initPassportLocal
+module.exports = { initPassportLocal: initPassportLocal }

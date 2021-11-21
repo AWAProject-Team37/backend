@@ -1,9 +1,9 @@
 const db = require('../configs/DB')
 const bcrypt = require('bcryptjs')
 
-let login = (email, password) => {
+const login = (email, password) => {
     return new Promise(async (resolve, reject) => {
-        let user = await findUserByEmail(email)
+        const user = await findUserByEmail(email)
         if (user) {
             await bcrypt.compare(password, user.password).then((isMatch) => {
                 if (isMatch) {
@@ -18,14 +18,14 @@ let login = (email, password) => {
     })
 }
 
-let findUserByEmail = (email) => {
+const findUserByEmail = (email) => {
     return new Promise((resolve, reject) => {
         try {
             db.query('SELECT * FROM `user` WHERE `email` = ?', email, function(err, rows) {
                 if (err) {
                     reject(err)
                 }
-                let user = rows[0]
+                const user = rows[0]
                 resolve(user)
             })
         } catch (err) {
@@ -34,14 +34,14 @@ let findUserByEmail = (email) => {
     })
 }
 
-let findUserById = (id) => {
+const findUserById = (id) => {
     return new Promise((resolve, reject) => {
         try {
             db.query('SELECT * FROM `user` WHERE `id` = ?', id, function(err, rows) {
                 if (err) {
                     reject(err)
                 }
-                let user = rows[0]
+                const user = rows[0]
                 resolve(user)
             })
         } catch (err) {
@@ -50,7 +50,7 @@ let findUserById = (id) => {
     })
 }
 
-let comparePassword = (password, userObject) => {
+const comparePassword = (password, userObject) => {
     return new Promise(async (resolve, reject) => {
         try {
             await bcrypt.compare(password, userObject).then((isMatch) => {

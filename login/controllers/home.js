@@ -1,4 +1,4 @@
-let home = async (req, res) => {
+const home = async (req, res) => {
     return res.render('index', {
         user: req.user
     })

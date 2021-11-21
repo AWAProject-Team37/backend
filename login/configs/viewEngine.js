@@ -1,9 +1,9 @@
 const express = require('express')
 
-let viewEngine = (app) => {
+const viewEngine = (app) => {
     app.use(express.static('../public'))
     app.set('view engine', 'hbs')
     app.set('views', '../views')
 }
 
-module.exports = viewEngine
+module.exports = { viewEngine: viewEngine }

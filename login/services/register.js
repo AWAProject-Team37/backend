@@ -1,14 +1,14 @@
 const db = require('../configs/DB')
 const bcrypt = require('bcryptjs')
 
-let register = (data) => {
+const register = (data) => {
     return new Promise(async (resolve, reject) => {
-        let existEmail = await checkExistEmail(data.email)
+        const existEmail = await checkExistEmail(data.email)
         if (existEmail) {
             reject(`This email "${data.email}" has already exist!`)
         } else {
-            let salt = bcrypt.genSaltSync(10)
-            let newUser = {
+            const salt = bcrypt.genSaltSync(10)
+            const newUser = {
                 fname: data.fname,
                 lname: data.lname,
                 email: data.email,
@@ -24,7 +24,7 @@ let register = (data) => {
     })
 }
 
-let checkExistEmail = (email) => {
+const checkExistEmail = (email) => {
     return new Promise((resolve, reject) => {
         try {
             db.query('SELECT * FROM `user` WHERE `email` = ?', email, function(err, rows) {

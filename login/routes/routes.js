@@ -8,9 +8,9 @@ const auth = require('../validation/authValidation')
 
 initPassportLocal()
 
-let router = express.Router()
+const router = express.Router()
 
-let initRoutes = (app) => {
+const initRoutes = (app) => {
     router.get('/', login.checkLogin, home.home)
     router.get('/login', login.checkLogout, login.getLoginPage)
     router.post('/login', passport.authenticate('local', {
@@ -25,4 +25,4 @@ let initRoutes = (app) => {
     return app.use('/', router)
 }
 
-module.exports = initRoutes
+module.exports = { initRoutes }

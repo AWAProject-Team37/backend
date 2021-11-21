@@ -1,6 +1,6 @@
 const { check } = require('express-validator')
 
-let validateRegister = [
+const validateRegister = [
     check("email", "Invalid email").isEmail().trim(),
 
     check("password", "Invalid password. Password must be at least 2 chars long").isLength({ min: 2 }),
@@ -10,7 +10,7 @@ let validateRegister = [
     })
 ]
 
-let validateLogin = [
+const validateLogin = [
     check("email", "Invalid email").isEmail().trim(),
 
     check("password", "Invalid password").not().isEmpty()
