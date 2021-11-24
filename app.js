@@ -4,13 +4,13 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const path = require('path')
 const dotenv = require('dotenv')
-
-dotenv.config({ path: './env' })
+const cors = require('cors')
+//dotenv.config({ path: './env' })
+dotenv.config();
 
 const db = mysql.createConnection({
     host: process.env.HOST,
-    user: 'root',
-    // user: process.env.USER,
+    user: process.env.USER,
     password: process.env.PASSWORD,
     database: process.env.DATABASE
 })
@@ -24,7 +24,7 @@ db.connect((error) => {
 })
 
 const app = express()
-
+app.use(cors());
 app.use(session({
     secret: 'secret',
     resave: true,
@@ -38,7 +38,7 @@ app.set('view engine', 'hbs')
 
 app.use('/', require('./routes/pages'))
 app.use('/auth', require('./routes/auth'))
-
+app.use('/restaurants', require('./routes/restaurants'))
 // app.post('/auth', (req,res) => {
 //     const email = req.body.email
 //     const password = req.body.password
@@ -68,6 +68,6 @@ app.get('/home', (req, res) => {
     res.end()
 })
 
-app.listen(3000, () => {
-    console.log("Server running on port 3000")
+app.listen(4000, () => {
+    console.log("Server running on port 4000")
 })
