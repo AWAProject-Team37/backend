@@ -3,7 +3,7 @@ const passport = require('passport')
 const home = require('../controllers/home')
 const login = require('../controllers/login')
 const register = require('../controllers/register')
-const initPassportLocal = require('../controllers/passportLocal')
+const { initPassportLocal } = require('../controllers/passportLocal')
 const auth = require('../validation/authValidation')
 
 initPassportLocal()

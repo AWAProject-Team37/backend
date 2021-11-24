@@ -3,9 +3,9 @@ const express = require('express')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const connectFlash = require('connect-flash')
-const initRoutes = require('./routes/routes')
+const { initRoutes } = require('./routes/routes')
 const bodyParser = require('body-parser')
-const viewEngine = require('../configs/viewEngine')
+const { viewEngine } = require('./configs/viewEngine')
 const passport = require('passport')
 
 const app = express()
@@ -21,15 +21,17 @@ app.use(session({
     }
 }))
 
-app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 viewEngine(app)
 
 app.use(connectFlash())
 
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize())
+app.use(passport.session())
+
+initRoutes(app)
 
 let port = process.env.PORT || 3000
 app.listen(port, () => {
