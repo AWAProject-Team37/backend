@@ -1,39 +1,35 @@
-require('dotenv').config();
-const express = require('express')
-const session = require('express-session')
-const cookieParser = require('cookie-parser')
-const connectFlash = require('connect-flash')
-const { initRoutes } = require('./routes/routes')
-const bodyParser = require('body-parser')
-const { viewEngine } = require('./configs/viewEngine')
-const passport = require('passport')
+const express = require('express');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
+const morgan = require('morgan');
 
-const app = express()
+const app = express();
+const bodyParser = require('body-parser');
+const passport = require('passport');
 
-app.use(cookieParser('secret'))
+require('./config/passport')(passport);
+
+app.use(morgan('dev'));
+app.use(cookieParser());
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.set('view engine', 'ejs');
 
 app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24
-    }
-}))
+	secret: 'projectgroup37',
+	resave: true,
+	saveUninitialized: true
+ } ));
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
-viewEngine(app)
+require('./routes/routes.js')(app, passport);
 
-app.use(connectFlash())
-
-app.use(passport.initialize())
-app.use(passport.session())
-
-initRoutes(app)
-
-let port = process.env.PORT || 3000
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}!`)
-})
+const port = 3000;
+app.listen(port);
+console.log('Server is running on port ' + port);

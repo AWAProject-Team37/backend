@@ -1,28 +1,52 @@
-const express = require('express')
-const passport = require('passport')
-const home = require('../controllers/home')
-const login = require('../controllers/login')
-const register = require('../controllers/register')
-const { initPassportLocal } = require('../controllers/passportLocal')
-const auth = require('../validation/authValidation')
+module.exports = function(app, passport) {
+	app.get('/', function(req, res) {
+		res.render('index.ejs'); 
+	});
 
-initPassportLocal()
+	app.get('/login', function(req, res) {
+		res.render('login.ejs', { message: req.flash('loginMessage') });
+	});
 
-const router = express.Router()
+	app.post('/login', passport.authenticate('local-login', {
+            successRedirect : '/profile',
+            failureRedirect : '/login',
+            failureFlash : true
+		}),
+        function(req, res) {
+            console.log("hello");
 
-const initRoutes = (app) => {
-    router.get('/', login.checkLogin, home.home)
-    router.get('/login', login.checkLogout, login.getLoginPage)
-    router.post('/login', passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        successFlash: true,
-        failureFlash: true
-    }))
-    router.get('/register', register.getResgiterPage)
-    router.post('/register', auth.validateRegister, register.register)
-    router.post('/logout', login.postLogout)
-    return app.use('/', router)
+            if (req.body.remember) {
+              req.session.cookie.maxAge = 1000 * 60 * 3;
+            } else {
+              req.session.cookie.expires = false;
+            }
+        res.redirect('/');
+    });
+
+	app.get('/signup', function(req, res) {
+		res.render('signup.ejs', { message: req.flash('signupMessage') });
+	});
+
+	app.post('/signup', passport.authenticate('local-signup', {
+		successRedirect : '/profile',
+		failureRedirect : '/signup',
+		failureFlash : true
+	}));
+
+	app.get('/profile', isLoggedIn, function(req, res) {
+		res.render('profile.ejs', {
+			user : req.user
+		});
+	});
+
+	app.get('/logout', function(req, res) {
+		req.logout();
+		res.redirect('/');
+	});
+};
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+		return next();
+	res.redirect('/');
 }
-
-module.exports = { initRoutes }
