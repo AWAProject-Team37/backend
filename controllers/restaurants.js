@@ -13,3 +13,10 @@ exports.getAllRestaurants = (req, res) => {
         return res.json(result);
     })
 }
+
+exports.getRestaurantById = (req, res) => {
+    db.query(`SELECT * from restaurant WHERE idRestaurant=${req.params.id}`, (error, result) => {
+        if(error) console.log(error)
+        return res.json(result);
+    })
+}

@@ -39,6 +39,8 @@ app.set('view engine', 'hbs')
 app.use('/', require('./routes/pages'))
 app.use('/auth', require('./routes/auth'))
 app.use('/restaurants', require('./routes/restaurants'))
+app.use('/items', require('./routes/items'))
+
 // app.post('/auth', (req,res) => {
 //     const email = req.body.email
 //     const password = req.body.password
