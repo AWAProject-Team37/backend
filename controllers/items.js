@@ -14,3 +14,8 @@ exports.getRestaurantItems = (req, res) => {
     })
     
 }
+
+exports.addItemToMenu = (req, res) => {
+    console.log(req.body);
+    res.send("moro");
+}
