@@ -78,35 +78,36 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 // REGISTER
 app.post('/register', checkNotAuthenticated, async (req, res) => {
 	try {
-		const { firstName, lastName, email, password, passwordConfirm } = req.body
+		const { firstName, lastName, email, password, passwordConfirm, role } = req.body
 
 		// Valid email check
-		database.query('SELECT email FROM user WHERE email = ?', [email], (error, result) => {
+		database.query('SELECT email FROM user WHERE email = ?', [email], async (error, result) => {
 			if (error) {
 				console.log(error)
 			}
-			if (result.length > 0) {
-				return res.redirect('/register', { message: 'Email has already be used!' })
+			if (result) {
+				return res.redirect('/register')
 			} else if (password !== passwordConfirm) { // Password match check
-				return res.redirect('/register', { message: 'Passwords does not match!' })
+				res.redirect('/register')
 			}
-		})
 
-		// Insert user into database
-		const hashedPassword = await bcrypt.hased(password, 10)
-		database.query('INSERT INTO user SET ?', {
-			firstName: firstName,
-			lastName: lastName,
-			email: email,
-			password: hashedPassword
-		}, (error, result) => {
-			if (error) {
-				console.log(error)
-			} else {
-				res.redirect('/login')
-			}
+			// Insert user into database
+			const hashedPassword = await bcrypt.hash(password, 10)
+			database.query('INSERT INTO user SET ?', {
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				password: hashedPassword,
+				role: role
+			}, (error, result) => {
+				if (error) {
+					console.log(error)
+				} else {
+					res.redirect('/login')
+				}
+			})
 		})
-
+		
 	} catch {
 		res.redirect('/register')
 	}
