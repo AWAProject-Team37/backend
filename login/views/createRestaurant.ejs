@@ -1,29 +1,33 @@
-<h1>New Restaurant</h1>
-<form action="/newRestaurant" method="POOST">
+<h1>Create Restaurant</h1>
+<form action="/createRestaurant" method="POST">
     <div>
-        <label for="restaurantName"></label>
+        <label for="restaurantName">Name</label>
         <input type="text" id="restaurantName" name="restaurantName" required>
     </div>
     <div>
-        <label for="restaurantAddress"></label>
+        <label for="restaurantAddress">Address</label>
         <input type="text" id="restaurantAddress" name="restaurantAddress" required>
     </div>
     <div>
-        <label for="openHour"></label>
+        <label for="openHour">Open Hour</label>
         <input type="text" id="openHour" name="openHour" required>
     </div>
     <div>
-        <label for="closedHour"></label>
+        <label for="closedHour">Close Hour</label>
         <input type="text" id="closedHour" name="closedHour" required>
     </div>
     <div>
-        <label for="restaurantType"></label>
+        <label for="restaurantType">Type</label>
         <select name="restaurantType" id="restaurantType">
-            <option value="Burger">Burger</option>
+            <option value="buffet">Buffet</option>
+            <option value="fastFood">Fass Food</option>
+            <option value="fastCasual">Fast Casual</option>
+            <option value="casualDining">Casual Dining</option>
+            <option value="fineDining">Fine Dining</option>
         </select>
     </div>
     <div>
-        <label for="priceLevel"></label>
+        <label for="priceLevel">Price Level</label>
         <select name="priceLevel" id="priceLevel">
             <option value="low">Low</option>
             <option value="middle">Middle</option>

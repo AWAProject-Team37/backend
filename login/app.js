@@ -58,6 +58,14 @@ app.get('/createRestaurant', (req, res) => {
 	res.render('/createRestaurant.ejs')
 })
 
+app.get('/manageRestaurant', (req, res) => {
+	res.render('/manageRestaurant.ejs')
+})
+
+app.get('/createMenu', (req, res) => {
+	res.render('/createMenu.ejs')
+})
+
 
 // LOGIN
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
@@ -127,6 +135,7 @@ function checkNotAuthenticated(req, res, next) {
 	next()
 }
 
+
 // CREATE RESTAURANT
 app.post('/createRestaurant', (req, res) => {
 	const { restaurantName, restaurantAddress, restaurantType, openHour, closeHour, priceLevel } = req.body
@@ -141,7 +150,25 @@ app.post('/createRestaurant', (req, res) => {
 		if (error) {
 			console.log(error)
 		} else {
-			res.redirect('/createMenu')
+			res.redirect('/manageRestaurant')
+		}
+	})
+})
+
+
+// EDIT MENU
+app.post('/createMenu', (req, res) => {
+	const { foodCategory, dishName, description, price } = req.body
+	database.query('INSERT INTO restaurant SET ?', {
+		category: foodCategory,
+		name: dishName,
+		description: description,
+		price: price
+	}, (error, result) => {
+		if (error) {
+			console.log(error)
+		} else {
+			res.redirect('/manageRestaurant')
 		}
 	})
 })
