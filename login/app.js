@@ -50,6 +50,14 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 	res.render('register.ejs')
 })
 
+app.get('/restaurant', (req, res) => {
+	res.render('/restaurant.ejs')
+})
+
+app.get('/createRestaurant', (req, res) => {
+	res.render('/createRestaurant.ejs')
+})
+
 
 // LOGIN
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
@@ -118,6 +126,25 @@ function checkNotAuthenticated(req, res, next) {
 	}
 	next()
 }
+
+// CREATE RESTAURANT
+app.post('/createRestaurant', (req, res) => {
+	const { restaurantName, restaurantAddress, restaurantType, openHour, closeHour, priceLevel } = req.body
+	database.query('INSERT INTO restaurant SET ?', {
+		name: restaurantName,
+		address: restaurantAddress,
+		type: restaurantType,
+		open: openHour,
+		close: closeHour,
+		priceLevel: priceLevel
+	}, (error, result) => {
+		if (error) {
+			console.log(error)
+		} else {
+			res.redirect('/createMenu')
+		}
+	})
+})
 
 
 // PORT

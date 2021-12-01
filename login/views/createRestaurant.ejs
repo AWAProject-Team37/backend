@@ -1,0 +1,34 @@
+<h1>New Restaurant</h1>
+<form action="/newRestaurant" method="POOST">
+    <div>
+        <label for="restaurantName"></label>
+        <input type="text" id="restaurantName" name="restaurantName" required>
+    </div>
+    <div>
+        <label for="restaurantAddress"></label>
+        <input type="text" id="restaurantAddress" name="restaurantAddress" required>
+    </div>
+    <div>
+        <label for="openHour"></label>
+        <input type="text" id="openHour" name="openHour" required>
+    </div>
+    <div>
+        <label for="closedHour"></label>
+        <input type="text" id="closedHour" name="closedHour" required>
+    </div>
+    <div>
+        <label for="restaurantType"></label>
+        <select name="restaurantType" id="restaurantType">
+            <option value="Burger">Burger</option>
+        </select>
+    </div>
+    <div>
+        <label for="priceLevel"></label>
+        <select name="priceLevel" id="priceLevel">
+            <option value="low">Low</option>
+            <option value="middle">Middle</option>
+            <option value="high">High</option>
+        </select>
+    </div>
+    <button type="submit">Create</button>
+</form>
