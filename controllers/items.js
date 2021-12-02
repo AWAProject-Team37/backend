@@ -9,6 +9,12 @@ exports.getRestaurantItems = (req, res) => {
 }
 
 exports.addItemToMenu = (req, res) => {
-    console.log(req.body);
-    res.send("moro");
+    db.query(`insert into Item values(null, ${req.body.id}, "${req.body.name}", ${req.body.price}, "${req.body.category}", "${req.file.path}", "${req.body.desc}")`, (error, result) => {
+        if(error){
+            console.log(error);
+            res.status(400).send({msg: "something went wrong"});
+        } else {
+            res.send("Item added")
+        }
+    }) 
 }
