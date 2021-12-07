@@ -3,6 +3,8 @@ const ordersController = require('../controllers/orders')
 const router = express.Router()
 
 
-router.get("/:id", ordersController.getRestaurantOrdersById);
+router.put("/:id", ordersController.putRestaurantOrderStatusById);
+router.get("/completed/:id", ordersController.getRestaurantCompletedOrdersById)
+router.get("/uncompleted/:id", ordersController.getRestaurantUncompletedOrdersById)
 
 module.exports = router;
