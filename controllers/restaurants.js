@@ -21,3 +21,12 @@ exports.addRestaurant = (req, res) => {
         return res.send("Restaurant added");
     })
 }
+exports.getRestaurantByUserId = (req, res) => {
+    db.query(`SELECT * from restaurant WHERE idUser=${req.params.id}`, (error, result) => {
+        if(error) {
+            console.log(error);
+            res.status(400).send({msg: "error"});
+        }
+        return res.json(result);
+    })
+}
