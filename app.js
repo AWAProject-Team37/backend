@@ -45,6 +45,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/restaurants', require('./routes/restaurants'))
+app.use('/orders', require('./routes/orders'))
 app.use('/items', require('./routes/items'))
 app.use('/register', require('./routes/register'))
 app.use('/login', passport.authenticate('basic', {session: false}), require('./routes/login'))
