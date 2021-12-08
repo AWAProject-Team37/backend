@@ -20,7 +20,8 @@ exports.getRestaurantCompletedOrdersById = (req, res) => {
 }
 
 exports.newOrder = (req, res) => {
-    db.query(`INSERT into product_order values("${req.body.idOrder}", ${req.body.idUser}, "Received", "${req.body.date}", ${req.body.idRestaurant})`, (error, result) => {
+    console.log(req.body)
+    db.query(`INSERT into product_order values("${req.body.idOrder}", ${req.body.idUser}, "Received", "${req.body.date}", ${req.body.idRestaurant}, "${req.body.address}")`, (error, result) => {
         if(error){
             res.status(400).send({msg: "error"});
             console.log(error);
