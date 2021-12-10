@@ -3,9 +3,11 @@ const ordersController = require('../controllers/orders')
 const router = express.Router()
 
 
-router.put("/:id", ordersController.putRestaurantOrderStatusById);
+
 router.post("/new", ordersController.newOrder);
-router.get("/completed/:id", ordersController.getRestaurantCompletedOrdersById)
-router.get("/uncompleted/:id", ordersController.getRestaurantsUncompletedOrdersById)
+router.get("/completed/:id", ordersController.getRestaurantCompletedOrdersById);
+router.get("/completeditems/:id", ordersController.getRestaurantCompletedItemsById);
+router.get("/uncompleted/:id", ordersController.getRestaurantsUncompletedOrdersById);
+router.put("/status/:id", ordersController.changeOrderStatus);
 
 module.exports = router;

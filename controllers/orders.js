@@ -1,23 +1,43 @@
 const db = require('../database');
 
-exports.putRestaurantOrderStatusById = (req, res) => {
-    db.query(`SELECT FirstName,LastName,Name,Price from restaurant =${req.params.id}`, (error, result) => {
+exports.getRestaurantsUncompletedOrdersById = (req, res) => {
+    db.query(`SELECT idOrder, FirstName,LastName, Date, Address FROM product_order JOIN user ON product_order.idUser=user.idUser WHERE idRestaurant=${req.params.id} AND Status != 'Delivered'`, (error, result) => {
         if(error) console.log(error)
         return res.json(result);
     })
 }
-exports.getRestaurantsUncompletedOrdersById = (req, res) => {
-    db.query(`SELECT FirstName,LastName,Name,date,Price,idOrder from restaurant JOIN user ON restaurant =${req.params.id}`, (error, result) => {
+exports.getRestaurantsUncompletedItemsById = (req, res) => {
+    db.query(`SELECT item.name, item.price, Quantity FROM order_item JOIN item ON order_item.idItem=item.idItem  WHERE idOrder =${req.params.id}`, (error, result) => {
         if(error) console.log(error)
         return res.json(result);
     })
 }
 exports.getRestaurantCompletedOrdersById = (req, res) => {
-    db.query(`SELECT FirstName,LastName,Name,Price from restaurant =${req.params.id}`, (error, result) => {
+    
+    
+    db.query(`SELECT idOrder, FirstName,LastName,Date, Address FROM product_order JOIN user ON product_order.idUser=user.idUser WHERE idRestaurant=${req.params.id} AND Status = 'Delivered'`, (error, result) => {
         if(error) console.log(error)
-        return res.json(result);
-    })
-}
+        console.log(result);
+         return res.json(result);
+        
+        
+       
+         })
+}  
+exports.getRestaurantCompletedItemsById = (req, res) => {
+    
+     db.query(`SELECT item.name, item.price, Quantity FROM order_item JOIN item ON order_item.idItem=item.idItem  WHERE idOrder =${req.params.id}`, (error, result) => {
+            if(error) console.log(error)
+             console.log(result);
+             return res.json(result);
+            
+           
+             })
+    }  
+        
+       
+
+
 
 exports.newOrder = (req, res) => {
     console.log(req.body)
@@ -36,4 +56,10 @@ exports.newOrder = (req, res) => {
         })
     });
     res.send("Order received")
+}
+exports.changeOrderStatus = (req, res) => {
+    db.query(`UPDATE product_order SET Status = '${req.body.status}' WHERE idOrder =${req.body.id}`, (error, result) => {
+        if(error) console.log(error)
+        return res.json(result);
+    })
 }
