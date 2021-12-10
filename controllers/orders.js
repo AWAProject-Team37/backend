@@ -57,9 +57,28 @@ exports.newOrder = (req, res) => {
     });
     res.send("Order received")
 }
+
 exports.changeOrderStatus = (req, res) => {
     db.query(`UPDATE product_order SET Status = '${req.body.status}' WHERE idOrder =${req.body.id}`, (error, result) => {
         if(error) console.log(error)
         return res.json(result);
     })
 }
+
+
+exports.getOrdersByCustomerId = (req, res) => {
+    db.query(`SELECT * from product_order where idUser=${req.params.id}`, (error, result) => {
+        if(error){
+            res.status(400).send({msg: "error"});
+        }
+        res.send(result);
+    })
+}
+
+exports.getOrderItems = (req, res) => {
+    db.query(`SELECT item.name, item.price, Quantity FROM order_item JOIN item ON order_item.idItem=item.idItem  WHERE idOrder ="${req.params.id}"`, (error, result) => {
+        if(error) res.status(400).send({msg: "error"})
+        res.send(result);
+    })
+}
+
