@@ -10,7 +10,7 @@ exports.getRestaurantsUncompletedOrdersById = (req, res) => {
 exports.getRestaurantCompletedOrdersById = (req, res) => {
     
     
-    db.query(`SELECT idOrder, FirstName,LastName,Date, AddressFROM product_order JOIN user ON product_order.idUser=user.idUser WHERE idRestaurant=${req.params.id} AND Status = 'Delivered'`, (error, result) => {
+    db.query(`SELECT idOrder, FirstName,LastName,Date, Address FROM product_order JOIN user ON product_order.idUser=user.idUser WHERE idRestaurant=${req.params.id} AND Status = 'Delivered'`, (error, result) => {
         if(error) console.log(error)
         console.log(result);
          return res.json(result);
