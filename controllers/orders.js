@@ -37,3 +37,19 @@ exports.newOrder = (req, res) => {
     });
     res.send("Order received")
 }
+
+exports.getOrdersByCustomerId = (req, res) => {
+    db.query(`SELECT * from product_order where idUser=${req.params.id}`, (error, result) => {
+        if(error){
+            res.status(400).send({msg: "error"});
+        }
+        res.send(result);
+    })
+}
+
+exports.getOrderItems = (req, res) => {
+    db.query(`SELECT item.name, item.price, Quantity FROM order_item JOIN item ON order_item.idItem=item.idItem  WHERE idOrder ="${req.params.id}"`, (error, result) => {
+        if(error) res.status(400).send({msg: "error"})
+        res.send(result);
+    })
+}
