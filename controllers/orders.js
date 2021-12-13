@@ -45,7 +45,7 @@ exports.newOrder = (req, res) => {
 
 exports.changeOrderStatus = (req, res) => {
     console.log(req.body);
-    db.query(`UPDATE product_order SET Status = '${req.body.status}' WHERE idOrder =${req.body.id}`, (error, result) => {
+    db.query(`UPDATE product_order SET Status = '${req.body.status}' WHERE idOrder ="${req.body.id}"`, (error, result) => {
         if(error) console.log(error)
         return res.json(result);
     })
