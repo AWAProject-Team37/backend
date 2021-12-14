@@ -19,11 +19,6 @@ exports.getRestaurantCompletedOrdersById = (req, res) => {
          })
 }  
 
-        
-       
-
-
-
 exports.newOrder = (req, res) => {
     console.log(req.body)
     db.query(`INSERT into product_order values("${req.body.idOrder}", ${req.body.idUser}, "Received", "${req.body.date}", ${req.body.idRestaurant}, "${req.body.address}")`, (error, result) => {
@@ -40,7 +35,6 @@ exports.newOrder = (req, res) => {
             }
         })
     });
-    res.send("Order received")
 }
 
 exports.changeOrderStatus = (req, res) => {

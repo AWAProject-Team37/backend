@@ -8,15 +8,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport')
 const db = require('./database')
 const BasicStrategy = require('passport-http').BasicStrategy
-/*
-db.connect((error) => {
-    if(error) {
-        console.log(error)
-    } else {
-        console.log('MySQL Connected')
-    }
-})
-*/
+
 passport.use(new BasicStrategy((email, password, done) => {
     db.query(`SELECT * from user WHERE Email="${email}"`, (error, result) => {
         if(error) console.log(error.code)
